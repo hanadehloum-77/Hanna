@@ -1,0 +1,928 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hana's Private Correspondence</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Great+Vibes&display=swap');
+
+:root {
+    --wine: #4b101d;
+    --wine-dark: #17070d;
+    --wine-light: #762b37;
+    --gold: #d8b477;
+    --gold-light: #f1ddb2;
+    --ivory: #f5e8ce;
+    --ink: #30151b;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    min-height: 100%;
+    background: var(--wine-dark);
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    color: var(--ivory);
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    background:
+        radial-gradient(ellipse at 50% 35%, #54202a 0%, transparent 55%),
+        linear-gradient(145deg, #10050a, #2a0b13 55%, #10050a);
+    overflow-x: hidden;
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    opacity: .22;
+    background-image:
+        radial-gradient(ellipse at 15% 20%, #d7a35a 0, transparent 2%),
+        radial-gradient(ellipse at 85% 70%, #e5c58d 0, transparent 2%),
+        radial-gradient(ellipse at 75% 15%, #a44a43 0, transparent 3%);
+    background-size: 170px 210px, 230px 260px, 280px 240px;
+    animation: candleGlow 8s ease-in-out infinite alternate;
+}
+
+@keyframes candleGlow {
+    from { opacity: .10; }
+    to { opacity: .30; }
+}
+
+#mist {
+    position: fixed;
+    inset: -30%;
+    z-index: 20;
+    pointer-events: none;
+    opacity: 0;
+    background:
+        radial-gradient(ellipse at 25% 55%,
+            #f5e8ce55 0%, transparent 38%),
+        radial-gradient(ellipse at 70% 40%,
+            #fff0d333 0%, transparent 35%),
+        radial-gradient(ellipse at 50% 75%,
+            #c6a6ad33 0%, transparent 40%);
+    filter: blur(35px);
+    transform: translateX(-8%);
+}
+
+#mist.active {
+    animation: mistSweep 1.5s ease-in-out forwards;
+}
+
+@keyframes mistSweep {
+    0% { opacity: 0; transform: translateX(-8%) scale(.95); }
+    35% { opacity: .95; }
+    70% { opacity: .8; transform: translateX(5%) scale(1.08); }
+    100% { opacity: 0; transform: translateX(12%) scale(1.15); }
+}
+
+.page {
+    position: relative;
+    z-index: 1;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 36px 18px;
+}
+
+.frame {
+    position: relative;
+    width: min(100%, 680px);
+    padding: 28px 20px;
+    text-align: center;
+}
+
+.frame::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border: 1px solid #d8b47755;
+    pointer-events: none;
+}
+
+.frame::after {
+    content: "✦";
+    position: absolute;
+    top: -12px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 0 14px;
+    color: var(--gold);
+    background: #210a12;
+    font-size: 20px;
+}
+
+.eyebrow {
+    color: var(--gold);
+    font-size: 11px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    margin: 4px 0 15px;
+}
+
+.crown {
+    color: var(--gold);
+    font-size: 25px;
+    margin: 0 0 8px;
+}
+
+h1, h2, p {
+    margin-top: 0;
+}
+
+h1 {
+    font-family: 'Great Vibes', cursive;
+    font-size: clamp(42px, 9vw, 68px);
+    font-weight: 400;
+    line-height: 1.2;
+    color: var(--gold-light);
+    text-shadow: 0 3px 20px #d8b47730;
+    margin-bottom: 12px;
+}
+
+.subtitle {
+    font-size: 17px;
+    font-style: italic;
+    color: #e8d6bd;
+    letter-spacing: .5px;
+}
+
+.ornament {
+    color: var(--gold);
+    letter-spacing: 8px;
+    margin: 20px 0;
+}
+
+.panel {
+    display: none;
+    animation: reveal .9s ease both;
+}
+
+.panel.show {
+    display: block;
+}
+
+@keyframes reveal {
+    from { opacity: 0; transform: translateY(15px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+button {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.royal-button {
+    position: relative;
+    border: 1px solid var(--gold);
+    outline: 1px solid #d8b47744;
+    outline-offset: 4px;
+    border-radius: 2px;
+    padding: 13px 25px;
+    color: var(--gold-light);
+    background: linear-gradient(135deg, #762b37, #3a0d18 70%);
+    font-size: 17px;
+    letter-spacing: 1px;
+    box-shadow: 0 8px 24px #0006, inset 0 1px #ffffff16;
+    transition: .35s ease;
+}
+
+.royal-button:hover {
+    color: #fff5db;
+    background: linear-gradient(135deg, #963c48, #521421);
+    box-shadow: 0 0 24px #d8b47730;
+    transform: translateY(-2px);
+}
+
+.royal-button:active {
+    transform: translateY(1px);
+}
+
+.small-note {
+    color: #d2bba9;
+    font-size: 14px;
+    font-style: italic;
+    margin-top: 25px;
+}
+
+@media (max-width: 480px) {
+    .page { padding: 25px 13px; }
+    .frame { padding: 25px 15px; }
+    .eyebrow { letter-spacing: 2.5px; }
+}
+</style>
+</head>
+
+<body>
+<div id="mist"></div>
+<main class="page">
+<div class="frame">
+<div class="eyebrow">Hana's Private Correspondence</div>
+<div class="crown">♛</div>
+
+<section class="panel show" id="envelopeScreen">
+    <h1>A Letter for You</h1>
+    <p class="subtitle">A secret awaits behind this royal seal.</p>
+
+    <div class="envelope-scene">
+        <button
+            type="button"
+            class="envelope"
+            id="envelope"
+            aria-label="Open the sealed letter"
+        >
+            <span class="letter-paper">
+                <span class="paper-crown">♛</span>
+                <span class="paper-heading">A Private Letter</span>
+                <span class="paper-line"></span>
+                <span class="paper-script">For you, dear guest</span>
+            </span>
+
+            <span class="envelope-back"></span>
+            <span class="envelope-pocket"></span>
+            <span class="envelope-flap"></span>
+
+            <span class="wax-seal">
+                <span>♛</span>
+            </span>
+        </button>
+    </div>
+
+    <div class="ornament">— ❦ —</div>
+    <p class="small-note">Tap the royal seal to open your letter.</p>
+</section>
+
+<section class="panel" id="welcomePanel">
+    <div class="letter-card">
+        <div class="paper-crown">♛</div>
+        <div class="paper-heading">Welcome, Dear Guest</div>
+        <div class="paper-divider">❦</div>
+
+        <p class="letter-text">
+            Hello, I'm Hana.<br>
+            Welcome to my little world, dear guest.<br>
+            How may I be of service to you today?
+        </p>
+
+        <p class="letter-text">
+            Before entering my private world,
+            allow me to ask you a few little questions.
+        </p>
+
+        <p class="signature">Hana ♡</p>
+
+        <button class="royal-button" id="beginButton">
+            Begin the Royal Questions
+        </button>
+    </div>
+</section>
+
+<section class="panel" id="quizPanel">
+    <div class="quiz-card">
+        <div class="crown">♛</div>
+        <p class="eyebrow" id="progressText">Question 1 of 4</p>
+
+        <div class="progress-track">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+
+        <h2 id="questionText">A little question awaits...</h2>
+
+        <div class="options" id="options"></div>
+        <p id="feedback" class="feedback"></p>
+    </div>
+</section>
+
+<section class="panel" id="deniedPanel">
+    <div class="crown">♛</div>
+    <h1>Access Denied</h1>
+    <div class="ornament">— ❦ —</div>
+
+    <p class="letter-text">
+        Hmm... don't you have something more important to do
+        than keeping tabs on me?
+    </p>
+
+    <p class="letter-text">
+        This private correspondence is not for you.
+    </p>
+
+    <p class="signature">The Queen</p>
+
+    <button class="royal-button" id="retryButton">
+        Return to the Beginning
+    </button>
+</section>
+
+<section class="panel" id="successPanel">
+    <div class="crown">♛</div>
+    <h1>Welcome to My Inner Circle</h1>
+
+    <p class="letter-text">
+        Splendid! You have proven your knowledge of Her Majesty.
+    </p>
+
+    <p class="letter-text">
+        You may now leave a private message for Hana.
+    </p>
+
+    <div class="message-card">
+        <form id="messageForm">
+            <label for="guestName">Your name</label>
+            <input
+                type="text"
+                id="guestName"
+                placeholder="Your name"
+                required
+            >
+
+            <label for="guestEmail">Your email</label>
+            <input
+                type="email"
+                id="guestEmail"
+                placeholder="Your email (optional)"
+            >
+
+            <label for="guestMessage">Your letter</label>
+            <textarea
+                id="guestMessage"
+                placeholder="Write your message to Hana..."
+                required
+            ></textarea>
+
+            <button class="royal-button" type="submit">
+                ✉ Seal and Send the Letter
+            </button>
+        </form>
+
+        <p id="formFeedback" class="feedback"></p>
+    </div>
+
+    <p class="signature">With elegance, Hana ♡</p>
+</section>
+</div>
+</main>
+
+<style>
+/* Three-dimensional royal envelope */
+
+.envelope-scene {
+    perspective: 1000px;
+    width: min(100%, 370px);
+    margin: 35px auto 20px;
+    padding: 45px 0 20px;
+}
+
+.envelope {
+    position: relative;
+    display: block;
+    width: 100%;
+    aspect-ratio: 1.55 / 1;
+    border: 0;
+    background: transparent;
+    padding: 0;
+    perspective: 1000px;
+    transform-style: preserve-3d;
+}
+
+.envelope-back {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(145deg, #e9d5ad, #b99160);
+    border: 1px solid #f2dfb6;
+    box-shadow: 0 20px 40px #0008;
+}
+
+.envelope-pocket {
+    position: absolute;
+    inset: 0;
+    background:
+        linear-gradient(32deg, transparent 49.5%, #b18b5d 50%, transparent 50.8%),
+        linear-gradient(-32deg, transparent 49.5%, #f1ddb8 50%, transparent 50.8%),
+        linear-gradient(145deg, #ddc39a, #b48a59);
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+}
+
+.envelope-flap {
+    position: absolute;
+    inset: 0 0 auto;
+    height: 60%;
+    z-index: 5;
+    transform-origin: top center;
+    transform: rotateX(0deg);
+    transition: transform 1s cubic-bezier(.2,.7,.2,1);
+    backface-visibility: visible;
+    background: linear-gradient(160deg, #f4e2bf, #c5a071);
+    clip-path: polygon(0 0, 100% 0, 50% 100%);
+    filter: drop-shadow(0 4px 3px #3b1b12aa);
+}
+
+.letter-paper {
+    position: absolute;
+    left: 8%;
+    top: 8%;
+    width: 84%;
+    height: 82%;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    color: var(--ink);
+    background:
+        radial-gradient(ellipse at center, #fff7e5, #e9d3ac);
+    border: 1px solid #fff0ce;
+    box-shadow: 0 0 14px #2a110d33;
+    transition:
+        transform 1.1s cubic-bezier(.2,.7,.2,1),
+        opacity .5s ease;
+}
+
+.paper-crown {
+    color: #8a642f;
+    font-size: 25px;
+}
+
+.paper-heading {
+    color: #6d2933;
+    font-family: 'Great Vibes', cursive;
+    font-size: 25px;
+}
+
+.paper-line {
+    width: 55%;
+    height: 1px;
+    background: #b99865;
+}
+
+.paper-script {
+    font-style: italic;
+    font-size: 15px;
+}
+
+.wax-seal {
+    position: absolute;
+    z-index: 7;
+    left: 50%;
+    top: 53%;
+    transform: translate(-50%, -50%);
+    width: 65px;
+    height: 65px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    color: #e8c989;
+    font-size: 25px;
+    border: 3px solid #7e2731;
+    background:
+        radial-gradient(circle at 32% 25%, #a8444d, #681622 65%, #3e0b12);
+    box-shadow:
+        0 5px 10px #26080c99,
+        inset 0 0 0 2px #c76b6b55,
+        inset 0 -5px 9px #27070b77;
+    transition: opacity .3s ease, transform .5s ease;
+}
+
+.envelope.opened .envelope-flap {
+    transform: rotateX(180deg);
+    z-index: 1;
+}
+
+.envelope.opened .letter-paper {
+    transform: translateY(-78%) scale(1.02);
+    z-index: 8;
+}
+
+.envelope.opened .wax-seal {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(.3);
+}
+
+.envelope.opened .envelope-pocket {
+    z-index: 4;
+}
+
+.envelope.opened {
+    cursor: default;
+}
+
+/* The welcome letter */
+
+.letter-card {
+    padding: 28px 20px;
+    color: var(--ink);
+    background:
+        radial-gradient(ellipse at 50% 30%, #fff9e9, #e9d3ac);
+    border: 1px solid #d2b17d;
+    outline: 1px solid #d2b17d55;
+    outline-offset: 6px;
+    box-shadow: 0 20px 60px #0008;
+}
+
+.letter-card .paper-heading {
+    font-size: clamp(30px, 7vw, 42px);
+}
+
+.paper-divider {
+    color: #8a642f;
+    margin: 12px 0 18px;
+}
+
+.letter-text {
+    font-size: 19px;
+    line-height: 1.7;
+    color: #f0dfcb;
+}
+
+.letter-card .letter-text {
+    color: #382027;
+}
+
+.signature {
+    font-family: 'Great Vibes', cursive;
+    font-size: 36px;
+    color: var(--gold-light);
+    margin: 22px 0;
+}
+
+.letter-card .signature {
+    color: #762b37;
+}
+
+/* Quiz panels */
+
+.quiz-card {
+    padding: 28px 20px;
+    border: 1px solid #b68b52;
+    background: linear-gradient(145deg, #2c0d17ee, #16060cfa);
+    box-shadow: 0 20px 60px #0008;
+}
+
+.quiz-card h2 {
+    font-weight: 500;
+    font-size: clamp(23px, 5vw, 31px);
+    color: var(--gold-light);
+    margin: 25px 0;
+}
+
+.progress-track {
+    height: 5px;
+    border: 1px solid #8d5a4a;
+    background: #210912;
+    overflow: hidden;
+    margin: 18px 0;
+}
+
+.progress-fill {
+    width: 25%;
+    height: 100%;
+    background: linear-gradient(90deg, #b78b50, #f1ddb2);
+    transition: width .5s ease;
+}
+
+.options {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+}
+
+.option {
+    min-height: 58px;
+    padding: 12px 8px;
+    border: 1px solid #a97947;
+    color: #f1ddb2;
+    background: linear-gradient(145deg, #411421, #200911);
+    font-size: 18px;
+    transition: .3s ease;
+}
+
+.option:hover,
+.option:focus-visible {
+    background: #6d2933;
+    border-color: #f1ddb2;
+    box-shadow: 0 0 18px #d8b47730;
+    transform: translateY(-2px);
+}
+
+.feedback {
+    color: var(--gold-light);
+    font-size: 16px;
+    line-height: 1.6;
+}
+
+/* Private message form */
+
+.message-card {
+    padding: 22px 16px;
+    margin-top: 24px;
+    text-align: left;
+    background:
+        radial-gradient(ellipse at center, #fff7e5, #e5cda5);
+    border: 1px solid #c7a16d;
+    box-shadow: 0 15px 40px #0006;
+}
+
+.message-card label {
+    display: block;
+    margin: 12px 0 5px;
+    color: #6a2a32;
+    font-size: 16px;
+}
+
+.message-card input,
+.message-card textarea {
+    width: 100%;
+    padding: 12px;
+    color: #321820;
+    background: #fff9ec;
+    border: 1px solid #c7a16d;
+    border-radius: 0;
+    font: 16px 'Cormorant Garamond', Georgia, serif;
+    outline: none;
+}
+
+.message-card input:focus,
+.message-card textarea:focus {
+    border-color: #762b37;
+    box-shadow: 0 0 0 2px #762b3720;
+}
+
+.message-card textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+.message-card button {
+    display: block;
+    margin: 20px auto 0;
+    max-width: 100%;
+}
+
+.message-card .feedback {
+    color: #6a2a32;
+    text-align: center;
+}
+
+#deniedPanel {
+    padding: 20px 0;
+}
+
+@media (max-width: 480px) {
+    .envelope-scene {
+        width: 94%;
+        margin-top: 25px;
+    }
+
+    .wax-seal {
+        width: 55px;
+        height: 55px;
+    }
+
+    .options {
+        gap: 9px;
+    }
+
+    .option {
+        font-size: 16px;
+        min-height: 55px;
+    }
+
+    .letter-card,
+    .quiz-card {
+        padding: 24px 14px;
+    }
+
+    .message-card {
+        padding: 18px 12px;
+    }
+}
+</style>
+
+<script>
+const envelope = document.getElementById("envelope");
+const envelopeScreen = document.getElementById("envelopeScreen");
+const welcomePanel = document.getElementById("welcomePanel");
+const quizPanel = document.getElementById("quizPanel");
+const deniedPanel = document.getElementById("deniedPanel");
+const successPanel = document.getElementById("successPanel");
+const mist = document.getElementById("mist");
+
+const beginButton = document.getElementById("beginButton");
+const progressText = document.getElementById("progressText");
+const progressFill = document.getElementById("progressFill");
+const questionText = document.getElementById("questionText");
+const optionsContainer = document.getElementById("options");
+const retryButton = document.getElementById("retryButton");
+
+let currentQuestion = 0;
+let opening = false;
+
+const questions = [
+    {
+        question: "What is my zodiac sign?",
+        options: ["Aries ♈", "Leo ♌", "Libra ♎", "Taurus ♉"],
+        answer: "Leo ♌"
+    },
+    {
+        question: "What is my favorite perfume?",
+        options: [
+            "Le Monde Sur Mesure",
+            "Chanel N°5",
+            "Dior Sauvage",
+            "Oud"
+        ],
+        answer: "Le Monde Sur Mesure"
+    },
+    {
+        question: "What is my favorite color?",
+        options: [
+            "Emerald Green",
+            "Royal Blue",
+            "Burgundy",
+            "Rose Gold"
+        ],
+        answer: "Royal Blue"
+    },
+    {
+        question: "What is my favorite gemstone?",
+        options: [
+            "Blue Diamond",
+            "Pink Diamond",
+            "Musgravite",
+            "Black Opal"
+        ],
+        answer: "Blue Diamond"
+    }
+];
+
+function showMist(callback) {
+    mist.classList.remove("active");
+    void mist.offsetWidth;
+    mist.classList.add("active");
+
+    setTimeout(() => {
+        if (callback) callback();
+    }, 650);
+}
+
+function showPanel(panel) {
+    [
+        envelopeScreen,
+        welcomePanel,
+        quizPanel,
+        deniedPanel,
+        successPanel
+    ].forEach(section => {
+        section.classList.remove("show");
+    });
+
+    panel.classList.add("show");
+    window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function openEnvelope() {
+    if (opening || envelope.classList.contains("opened")) {
+        return;
+    }
+
+    opening = true;
+    envelope.classList.add("opened");
+
+    showMist(() => {
+        showPanel(welcomePanel);
+        opening = false;
+    });
+}
+
+envelope.addEventListener("click", openEnvelope);
+
+envelope.addEventListener("keydown", event => {
+    if (event.key === "Enter" || event.key === " ") {
+        event.preventDefault();
+        openEnvelope();
+    }
+});
+
+beginButton.addEventListener("click", () => {
+    currentQuestion = 0;
+
+    showMist(() => {
+        showPanel(quizPanel);
+        displayQuestion();
+    });
+});
+
+function displayQuestion() {
+    const item = questions[currentQuestion];
+
+    progressText.textContent =
+        `Question ${currentQuestion + 1} of ${questions.length}`;
+
+    progressFill.style.width =
+        `${((currentQuestion + 1) / questions.length) * 100}%`;
+
+    questionText.textContent = item.question;
+    optionsContainer.innerHTML = "";
+
+    item.options.forEach(option => {
+        const button = document.createElement("button");
+
+        button.type = "button";
+        button.className = "option";
+        button.textContent = option;
+
+        button.addEventListener("click", () => {
+            checkAnswer(option);
+        });
+
+        optionsContainer.appendChild(button);
+    });
+}
+
+function checkAnswer(selectedAnswer) {
+    const correctAnswer = questions[currentQuestion].answer;
+
+    if (selectedAnswer !== correctAnswer) {
+        showMist(() => {
+            showPanel(deniedPanel);
+        });
+        return;
+    }
+
+    currentQuestion++;
+
+    if (currentQuestion < questions.length) {
+        showMist(() => {
+            displayQuestion();
+        });
+    } else {
+        showMist(() => {
+            showPanel(successPanel);
+        });
+    }
+}
+
+retryButton.addEventListener("click", () => {
+    currentQuestion = 0;
+    opening = false;
+    envelope.classList.remove("opened");
+    progressFill.style.width = "25%";
+
+    showMist(() => {
+        showPanel(envelopeScreen);
+    });
+});
+
+/* Private letter form */
+
+const messageForm = document.getElementById("messageForm");
+const guestName = document.getElementById("guestName");
+const guestEmail = document.getElementById("guestEmail");
+const guestMessage = document.getElementById("guestMessage");
+const formFeedback = document.getElementById("formFeedback");
+
+messageForm.addEventListener("submit", event => {
+    event.preventDefault();
+
+    const recipient = "YOUR_EMAIL@example.com";
+
+    if (recipient === "YOUR_EMAIL@example.com") {
+        formFeedback.textContent =
+            "Please add your email address in the code first.";
+        return;
+    }
+
+    const subject = encodeURIComponent(
+        "A private letter for Hana from " + guestName.value
+    );
+
+    const body = encodeURIComponent(
+        "Dear Hana,\n\n" +
+        guestMessage.value +
+        "\n\nFrom: " + guestName.value +
+        "\nGuest email: " + (guestEmail.value || "Not provided")
+    );
+
+    window.location.href =
+        `mailto:${recipient}?subject=${subject}&body=${body}`;
+
+    formFeedback.textContent =
+        "Your email app should open with your letter prepared.";
+});
+</script>
+
+</body>
+</html>
